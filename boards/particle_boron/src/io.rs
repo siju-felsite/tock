@@ -7,7 +7,7 @@ use core::panic::PanicInfo;
 use kernel::hil::uart::{Parameters, Parity, StopBits, Width};
 
 use nrf52840::gpio::Pin;
-use nrf52840::uart::{Uarte, UartPanicWriterConfig};
+use nrf52840::uart::{UartPanicWriterConfig, Uarte};
 
 const LED2_R_PIN: Pin = Pin::P0_13;
 

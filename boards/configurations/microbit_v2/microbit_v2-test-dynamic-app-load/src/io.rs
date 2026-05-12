@@ -8,7 +8,7 @@ use kernel::debug;
 use kernel::hil::led;
 use kernel::hil::uart::{Parameters, Parity, StopBits, Width};
 use nrf52833::gpio::Pin;
-use nrf52833::uart::{Uarte, UartPanicWriterConfig};
+use nrf52833::uart::{UartPanicWriterConfig, Uarte};
 
 /// Default panic handler for the microbit board.
 ///
