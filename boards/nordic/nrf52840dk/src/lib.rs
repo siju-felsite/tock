@@ -860,18 +860,28 @@ pub unsafe fn start_no_pconsole() -> (
         nrf52840::acomp::Channel,
         nrf52840::acomp::Channel::new(nrf52840::acomp::ChannelNumber::AC0)
     );
+    let channels = components::analog_comparator_component_helper!(
+        nrf52840::acomp::Channel,
+        analog_comparator_channel
+    );
     let analog_comparator = components::analog_comparator::AnalogComparatorComponent::new(
         &base_peripherals.acomp,
-        components::analog_comparator_component_helper!(
-            nrf52840::acomp::Channel,
-            analog_comparator_channel
-        ),
+        channels,
         board_kernel,
         capsules_extra::analog_comparator::DRIVER_NUM,
     )
     .finalize(components::analog_comparator_component_static!(
         nrf52840::acomp::Comparator
     ));
+
+    let grant_cap = create_capability!(capabilities::MemoryAllocationCapability);
+    let grant_ac =
+        board_kernel.create_grant(capsules_extra::analog_comparator::DRIVER_NUM, &grant_cap);
+    let ac2 = capsules_extra::analog_comparator::AnalogComparator::new(
+        &base_peripherals.acomp,
+        channels,
+        grant_ac,
+    );
 
     //--------------------------------------------------------------------------
     // NRF CLOCK SETUP
